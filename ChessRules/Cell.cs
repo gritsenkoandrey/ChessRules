@@ -33,7 +33,8 @@
 
         public string Name()
         {
-            return (char)('a' + X) + (Y + 1).ToString();
+            if (OnBoard()) return (char)('a' + X) + (Y + 1).ToString();
+            return "-";
         }
     }
 }

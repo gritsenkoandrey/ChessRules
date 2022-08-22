@@ -1,14 +1,16 @@
-﻿namespace ChessRules
+﻿using System.Text;
+
+namespace ChessRules
 {
     public sealed class Board
     {
-        public string Fen { get; }
+        public string Fen { get; private set; }
         public Color MoveColor { get; private set; }
+        public Cell EnPassant { get; private set; }
         public bool CanCastleA1 { get; private set; } //Q
         public bool CanCastleH1 { get; private set; } //K
         public bool CanCastleA8 { get; private set; } //q
         public bool CanCastleH8 { get; private set; } //k
-        public Cell EnPassant { get; private set; }
         public int DrawNumber { get; private set; }
         public int MoveNumber { get; private set; }
         
@@ -29,8 +31,11 @@
             
             next.SetFigureAt(fm.From, Figure.None);
             next.SetFigureAt(fm.To, fm.Figure);
-            next.MoveColor = MoveColor.FlipColor();
+            next.AddMoveNumber();
 
+            next.MoveColor = MoveColor.FlipColor();
+            next.GenerateFen();
+            
             return next;
         }
 
@@ -44,11 +49,86 @@
             return Figure.None;
         }
 
+        private void GenerateFen()
+        {
+            Fen = FenFigures() + " " + 
+                  FenMoveColor() + " " + 
+                  FenCastleFlags() + " " + 
+                  FenEnPassant() + " " +
+                  FenDrawNumber() + " " + 
+                  FenMoveNumber();
+        }
+
+        private string FenFigures()
+        {
+            StringBuilder sb = new StringBuilder();
+            
+            for (int y = 7; y >= 0; y--)
+            {
+                for (int x = 0; x < 8; x++)
+                {
+                    sb.Append(_figures[x,y] == Figure.None ? '1' : (char)_figures[x, y]);
+                }
+
+                if (y > 0)
+                {
+                    sb.Append("/");
+                }
+            }
+
+            string eight = "11111111";
+
+            for (int j = 8; j >= 2; j--)
+            {
+                sb = sb.Replace(eight.Substring(0, j), j.ToString());
+            }
+
+            return sb.ToString();
+        }
+
+        private string FenMoveColor()
+        {
+            return MoveColor == Color.White ? "w" : "b";
+        }
+
+        private string FenCastleFlags()
+        {
+            string flags = (CanCastleH1 ? "K" : "") +
+                           (CanCastleA1 ? "Q" : "") +
+                           (CanCastleH8 ? "k" : "") +
+                           (CanCastleA8 ? "q" : "") ;
+
+            return flags == "" ? "-" : flags;
+        }
+
+        private string FenEnPassant()
+        {
+            return EnPassant.Name();
+        }
+
+        private string FenDrawNumber()
+        {
+            return DrawNumber.ToString();
+        }
+
+        private string FenMoveNumber()
+        {
+            return MoveNumber.ToString();
+        }
+
         private void SetFigureAt(Cell cell, Figure figure)
         {
             if (cell.OnBoard())
             {
                 _figures[cell.X, cell.Y] = figure;
+            }
+        }
+
+        private void AddMoveNumber()
+        {
+            if (MoveColor == Color.Black)
+            {
+                MoveNumber++;
             }
         }
 

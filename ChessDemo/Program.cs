@@ -4,7 +4,7 @@ using ChessRules;
 
 namespace ChessDemo
 {
-    internal class Program
+    internal sealed class Program
     {
         public static void Main(string[] args)
         {
@@ -37,6 +37,7 @@ namespace ChessDemo
             {
                 sb.Append(y + 1);
                 sb.Append(" | ");
+                
                 for (int x = 0; x < 8; x++)
                 {
                     sb.Append(chess.GetFigure(x, y) + " ");
