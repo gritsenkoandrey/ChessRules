@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Collections.Generic;
+using System.Text;
 
 namespace ChessRules
 {
@@ -47,6 +48,17 @@ namespace ChessRules
             }
 
             return Figure.None;
+        }
+
+        public IEnumerable<FigureOnCell> YieldFigureOnCell()
+        {
+            foreach (Cell cell in Cell.YieldBoardCell())
+            {
+                if (GetFigureAt(cell).GetColor() == MoveColor)
+                {
+                    yield return new FigureOnCell(GetFigureAt(cell), cell);
+                }
+            }
         }
 
         private void GenerateFen()

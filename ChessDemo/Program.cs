@@ -16,6 +16,11 @@ namespace ChessDemo
                 
                 Print(ChessToAscii(chess));
 
+                foreach (string validMove in chess.YieldValidMoves())
+                {
+                    Console.WriteLine(validMove);
+                }
+
                 string move = Console.ReadLine();
 
                 if (move == "")

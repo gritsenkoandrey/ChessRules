@@ -22,5 +22,10 @@
             To = new Cell(move.Substring(3, 2));
             Promotion = move.Length == 6 ? (Figure)move[5] : Figure.None;
         }
+
+        public override string ToString()
+        {
+            return (char)Figure + From.Name() + To.Name();
+        }
     }
 }

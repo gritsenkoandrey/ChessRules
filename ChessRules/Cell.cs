@@ -1,4 +1,6 @@
-﻿namespace ChessRules
+﻿using System.Collections.Generic;
+
+namespace ChessRules
 {
     public readonly struct Cell
     {
@@ -33,8 +35,23 @@
 
         public string Name()
         {
-            if (OnBoard()) return (char)('a' + X) + (Y + 1).ToString();
+            if (OnBoard())
+            {
+                return (char)('a' + X) + (Y + 1).ToString();
+            }
+            
             return "-";
+        }
+
+        public static IEnumerable<Cell> YieldBoardCell()
+        {
+            for (int y = 0; y < 8; y++)
+            {
+                for (int x = 0; x < 8; x++)
+                {
+                    yield return new Cell(x, y);
+                }
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace ChessRules
+﻿using System.Collections.Generic;
+
+namespace ChessRules
 {
     public sealed class Chess
     {
@@ -42,6 +44,22 @@
             Figure figure = _board.GetFigureAt(cell);
             
             return figure == Figure.None ? '.' : (char)figure;
+        }
+
+        public IEnumerable<string> YieldValidMoves()
+        {
+            foreach (FigureOnCell fc in _board.YieldFigureOnCell())
+            {
+                foreach (Cell to in Cell.YieldBoardCell())
+                {
+                    FigureMoving fm = new FigureMoving(fc, to);
+
+                    if (_moves.CanMove(fm))
+                    {
+                        yield return fm.ToString();
+                    }
+                }
+            }
         }
     }
 }
