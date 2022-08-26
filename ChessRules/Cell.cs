@@ -53,5 +53,15 @@ namespace ChessRules
                 }
             }
         }
+
+        public static bool operator ==(Cell a, Cell b)
+        {
+            return a.X == b.X && a.Y == b.Y;
+        }
+
+        public static bool operator !=(Cell a, Cell b)
+        {
+            return !(a == b);
+        }
     }
 }

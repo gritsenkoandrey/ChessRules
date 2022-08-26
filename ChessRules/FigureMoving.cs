@@ -1,4 +1,6 @@
-﻿namespace ChessRules
+﻿using System;
+
+namespace ChessRules
 {
     public sealed class FigureMoving
     {
@@ -7,6 +9,11 @@
         public Cell To { get; }
         public Figure Promotion { get; }
 
+        public int DeltaX => Math.Abs(To.X - From.X);
+        public int DeltaY => Math.Abs(To.Y - From.Y);
+        public int SignX => Math.Sign(To.X - From.X);
+        public int SignY => Math.Sign(To.Y - From.Y);
+
         public FigureMoving(FigureOnCell fc, Cell to, Figure promotion = Figure.None)
         {
             Figure = fc.Figure;
@@ -14,7 +21,7 @@
             To = to;
             Promotion = promotion;
         }
-        
+
         public FigureMoving(string move)
         {
             Figure = (Figure)move[0];
