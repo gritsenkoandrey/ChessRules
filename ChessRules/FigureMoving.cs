@@ -9,8 +9,10 @@ namespace ChessRules
         public Cell To { get; }
         public Figure Promotion { get; }
 
-        public int DeltaX => Math.Abs(To.X - From.X);
-        public int DeltaY => Math.Abs(To.Y - From.Y);
+        public int AbsDeltaX => Math.Abs(DeltaX);
+        public int AbsDeltaY => Math.Abs(DeltaY);
+        public int DeltaX => To.X - From.X;
+        public int DeltaY => To.Y - From.Y;
         public int SignX => Math.Sign(To.X - From.X);
         public int SignY => Math.Sign(To.Y - From.Y);
 
