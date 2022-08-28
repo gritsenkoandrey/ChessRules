@@ -8,7 +8,7 @@ namespace ChessDemo
     {
         public static void Main(string[] args)
         {
-            Chess chess = new Chess();
+            Chess chess = new Chess("4k3/3p1p2/8/4P1P1/2p1p3/8/1P1P1P2/4K3 w KQkq - 0 1");
 
             while (true)
             {

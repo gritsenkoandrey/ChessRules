@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 
 namespace ChessRules
 {
@@ -8,13 +9,13 @@ namespace ChessRules
         public Cell From { get; }
         public Cell To { get; }
         public Figure Promotion { get; }
-
         public int AbsDeltaX => Math.Abs(DeltaX);
         public int AbsDeltaY => Math.Abs(DeltaY);
         public int DeltaX => To.X - From.X;
         public int DeltaY => To.Y - From.Y;
         public int SignX => Math.Sign(To.X - From.X);
         public int SignY => Math.Sign(To.Y - From.Y);
+        public Figure PlacedFigure => Promotion == Figure.None ? Figure : Promotion;
 
         public FigureMoving(FigureOnCell fc, Cell to, Figure promotion = Figure.None)
         {
@@ -32,6 +33,7 @@ namespace ChessRules
             Promotion = move.Length == 6 ? (Figure)move[5] : Figure.None;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public override string ToString()
         {
             return (char)Figure + 

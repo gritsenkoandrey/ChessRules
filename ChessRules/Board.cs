@@ -1,18 +1,19 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace ChessRules
 {
     public class Board
     {
         public string Fen { get; protected set; }
-        public Cell EnPassant { get; private set; }
+        public Cell EnPassant { get; protected set; }
         public Color MoveColor { get; protected set; }
-        public bool CanCastleA1 { get; private set; } //Q
-        public bool CanCastleH1 { get; private set; } //K
-        public bool CanCastleA8 { get; private set; } //q
-        public bool CanCastleH8 { get; private set; } //k
-        public int DrawNumber { get; private set; }
-        public int MoveNumber { get; protected set; }
+        protected bool CanCastleA1 { get; private set; } //Q
+        protected bool CanCastleH1 { get; private set; } //K
+        protected bool CanCastleA8 { get; private set; } //q
+        protected bool CanCastleH8 { get; private set; } //k
+        protected int DrawNumber { get; private set; }
+        protected int MoveNumber { get; set; }
         
         protected readonly Figure[,] Figures;
 
@@ -25,11 +26,13 @@ namespace ChessRules
             Init();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Board Move(FigureMoving fm)
         {
             return new NextBoard(Fen, fm);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Figure GetFigureAt(Cell cell)
         {
             if (cell.OnBoard())
@@ -40,6 +43,7 @@ namespace ChessRules
             return Figure.None;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<FigureOnCell> YieldFigureOnCell()
         {
             foreach (Cell cell in Cell.YieldBoardCell())
@@ -51,6 +55,7 @@ namespace ChessRules
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void Init()
         {
             //rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
@@ -66,6 +71,7 @@ namespace ChessRules
             InitMoveNumber(parts[5]);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void InitFigures(string part)
         {
             // 8->71->611->5111->41111->311111->2111111->11111111
@@ -88,11 +94,13 @@ namespace ChessRules
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void InitMoveColor(string part)
         {
             MoveColor = part == "b" ? Color.Black : Color.White;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void InitCastleFlags(string part)
         {
             CanCastleA1 = part.Contains("Q");
@@ -101,16 +109,19 @@ namespace ChessRules
             CanCastleH8 = part.Contains("k");
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void InitEnPassant(string part)
         {
             EnPassant = new Cell(part);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void InitDrawNumber(string part)
         {
             DrawNumber = int.Parse(part);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void InitMoveNumber(string part)
         {
             MoveNumber = int.Parse(part);

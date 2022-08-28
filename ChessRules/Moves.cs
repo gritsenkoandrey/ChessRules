@@ -1,4 +1,6 @@
-﻿namespace ChessRules
+﻿using System.Runtime.CompilerServices;
+
+namespace ChessRules
 {
     public sealed class Moves
     {
@@ -11,6 +13,7 @@
             _board = board;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool CanMove(FigureMoving fm)
         {
             _fm = fm;
@@ -18,6 +21,7 @@
             return CanMoveFrom() && CanMoveTo() && CanFigureMove();
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool CanMoveFrom()
         {
             return _fm.From.OnBoard() && 
@@ -25,12 +29,14 @@
                    _board.GetFigureAt(_fm.From) == _fm.Figure;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool CanMoveTo()
         {
             return _fm.To.OnBoard() && 
                    _board.GetFigureAt(_fm.To).GetColor() != _board.MoveColor;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool CanFigureMove()
         {
             switch (_fm.Figure)
@@ -58,11 +64,13 @@
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool CanKingMove()
         {
             return _fm.AbsDeltaX <= 1 && _fm.AbsDeltaY <= 1;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool CanStraightMove()
         {
             Cell at = _fm.From;
@@ -81,11 +89,13 @@
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool CanKnightMove()
         {
             return _fm.AbsDeltaX == 1 && _fm.AbsDeltaY == 2 || _fm.AbsDeltaX == 2 && _fm.AbsDeltaY == 1;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool CanPawnMove()
         {
             if (_fm.From.Y < 1 || _fm.From.Y > 6)
@@ -95,9 +105,10 @@
 
             int stepY = _fm.Figure.GetColor() == Color.White ? +1 : -1;
 
-            return CanPawnGo(stepY) || CanPawnJump(stepY) || CanPawnEat(stepY);
+            return CanPawnGo(stepY) || CanPawnJump(stepY) || CanPawnEat(stepY) || CanPawnEnPassant(stepY);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool CanPawnGo(int stepY)
         {
             if (_board.GetFigureAt(_fm.To) == Figure.None)
@@ -114,6 +125,7 @@
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool CanPawnJump(int stepY)
         {
             if (_board.GetFigureAt(_fm.To) == Figure.None)
@@ -136,6 +148,7 @@
             return false;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private bool CanPawnEat(int stepY)
         {
             if (_board.GetFigureAt(_fm.To) != Figure.None)
@@ -149,6 +162,29 @@
                 }
             }
             
+            return false;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool CanPawnEnPassant(int stepY)
+        {
+            if (_fm.To == _board.EnPassant)
+            {
+                if (_board.GetFigureAt(_fm.To) == Figure.None)
+                {
+                    if (_fm.DeltaY == stepY)
+                    {
+                        if (_fm.AbsDeltaX == 1)
+                        {
+                            if ((stepY == +1 && _fm.From.Y == 4) || (stepY == -1 && _fm.From.Y == 3))
+                            {
+                                return true;
+                            }
+                        }
+                    }
+                }
+            }
+
             return false;
         }
     }

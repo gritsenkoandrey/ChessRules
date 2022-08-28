@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace ChessRules
 {
@@ -21,6 +22,7 @@ namespace ChessRules
             _moves = new Moves(board);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Chess Move(string move)
         {
             FigureMoving fm = new FigureMoving(move);
@@ -37,6 +39,7 @@ namespace ChessRules
             return nextChess;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public char GetFigure(int x, int y)
         {
             Cell cell = new Cell(x,y);
@@ -46,6 +49,7 @@ namespace ChessRules
             return figure == Figure.None ? '.' : (char)figure;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public IEnumerable<string> YieldValidMoves()
         {
             foreach (FigureOnCell fc in _board.YieldFigureOnCell())

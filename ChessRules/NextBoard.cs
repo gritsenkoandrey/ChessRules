@@ -12,6 +12,8 @@ namespace ChessRules
             _fm = fm;
             
             MoveFigures();
+            DropEnPassant();
+            SetEnPassant();
             AddMoveNumber();
             UpdateMoveColor();
             GenerateFen();
@@ -21,7 +23,40 @@ namespace ChessRules
         private void MoveFigures()
         {
             SetFigureAt(_fm.From, Figure.None);
-            SetFigureAt(_fm.To, _fm.Promotion == Figure.None ? _fm.Figure : _fm.Promotion);
+            SetFigureAt(_fm.To, _fm.PlacedFigure);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void DropEnPassant()
+        {
+            if (_fm.To == EnPassant)
+            {
+                if (_fm.Figure == Figure.WhitePawn || _fm.Figure == Figure.BlackPawn)
+                {
+                    SetFigureAt(new Cell(_fm.To.X, _fm.From.Y), Figure.None);
+                }
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void SetEnPassant()
+        {
+            EnPassant = Cell.None;
+
+            if (_fm.Figure == Figure.WhitePawn)
+            {
+                if (_fm.From.Y == 1 && _fm.To.Y == 3)
+                {
+                    EnPassant = new Cell(_fm.From.X, 2);
+                }
+            }
+            else if (_fm.Figure == Figure.BlackPawn)
+            {
+                if (_fm.From.Y == 6 && _fm.To.Y == 4)
+                {
+                    EnPassant = new Cell(_fm.From.X, 5);
+                }
+            }
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

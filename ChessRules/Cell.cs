@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 
 namespace ChessRules
 {
@@ -28,11 +29,13 @@ namespace ChessRules
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public bool OnBoard()
         {
             return (X >= 0 && X < 8) && (Y >= 0 && Y < 8);
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public string Name()
         {
             if (OnBoard())
@@ -43,6 +46,7 @@ namespace ChessRules
             return "-";
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static IEnumerable<Cell> YieldBoardCell()
         {
             for (int y = 0; y < 8; y++)
@@ -54,11 +58,13 @@ namespace ChessRules
             }
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator ==(Cell a, Cell b)
         {
             return a.X == b.X && a.Y == b.Y;
         }
 
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public static bool operator !=(Cell a, Cell b)
         {
             return !(a == b);
