@@ -34,7 +34,10 @@ namespace ChessRules
 
         public override string ToString()
         {
-            return (char)Figure + From.Name() + To.Name();
+            return (char)Figure + 
+                   From.Name() + 
+                   To.Name() + 
+                   (Promotion == Figure.None ? "" : ((char)Promotion).ToString());
         }
     }
 }

@@ -52,11 +52,14 @@ namespace ChessRules
             {
                 foreach (Cell to in Cell.YieldBoardCell())
                 {
-                    FigureMoving fm = new FigureMoving(fc, to);
-
-                    if (_moves.CanMove(fm))
+                    foreach (Figure promotion in fc.Figure.YieldPromotions(to))
                     {
-                        yield return fm.ToString();
+                        FigureMoving fm = new FigureMoving(fc, to, promotion);
+
+                        if (_moves.CanMove(fm))
+                        {
+                            yield return fm.ToString();
+                        }
                     }
                 }
             }

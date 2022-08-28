@@ -31,7 +31,7 @@ namespace ChessRules
             Board next = new Board(Fen);
             
             next.SetFigureAt(fm.From, Figure.None);
-            next.SetFigureAt(fm.To, fm.Figure);
+            next.SetFigureAt(fm.To, fm.Promotion == Figure.None ? fm.Figure : fm.Promotion);
             next.AddMoveNumber();
 
             next.MoveColor = MoveColor.FlipColor();
