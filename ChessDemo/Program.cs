@@ -10,6 +10,10 @@ namespace ChessDemo
         {
             Chess chess = new Chess();
 
+            // Console.WriteLine(NextMoves(3, chess));
+            //
+            // return;
+            
             while (true)
             {
                 Console.WriteLine(chess.Fen);
@@ -30,6 +34,24 @@ namespace ChessDemo
 
                 chess = chess.Move(move);
             }
+        }
+
+        //https://www.chessprogramming.org/Perft_Results
+        private static int NextMoves(int step, Chess chess)
+        {
+            if (step == 0)
+            {
+                return 1;
+            }
+
+            int count = 0;
+
+            foreach (string move in chess.YieldValidMoves())
+            {
+                count += NextMoves(step - 1, chess.Move(move));
+            }
+
+            return count;
         }
 
         private static string ChessToAscii(Chess chess)

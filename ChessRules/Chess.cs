@@ -31,17 +31,12 @@ namespace ChessRules
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public Chess Move(string move)
         {
+            if (!IsValidMove(move))
+            {
+                return this;
+            }
+
             FigureMoving fm = new FigureMoving(move);
-
-            if (!_moves.CanMove(fm))
-            {
-                return this;
-            }
-
-            if (_board.IsCheckAfter(fm))
-            {
-                return this;
-            }
 
             Board nextBoard = _board.Move(fm);
             
@@ -59,7 +54,7 @@ namespace ChessRules
             
             return figure == Figure.None ? '.' : (char)figure;
         }
-        
+
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
         public char GetFigure(string name)
         {
@@ -91,6 +86,24 @@ namespace ChessRules
                     }
                 }
             }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool IsValidMove(string move)
+        {
+            FigureMoving fm = new FigureMoving(move);
+
+            if (!_moves.CanMove(fm))
+            {
+                return false;
+            }
+
+            if (_board.IsCheckAfter(fm))
+            {
+                return false;
+            }
+
+            return true;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
