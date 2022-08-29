@@ -6,6 +6,10 @@ namespace ChessRules
     public sealed class Chess
     {
         public string Fen => _board.Fen;
+        
+        public bool IsCheck { get; private set; }
+        public bool IsCheckmate { get; private set; }
+        public bool IsStalemate { get; private set; }
 
         private readonly Board _board;
         private readonly Moves _moves;
@@ -20,6 +24,8 @@ namespace ChessRules
         {
             _board = board;
             _moves = new Moves(board);
+            
+            SetCheckFlags();
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -62,10 +68,35 @@ namespace ChessRules
 
                         if (_moves.CanMove(fm))
                         {
-                            yield return fm.ToString();
+                            if (!_board.IsCheckAfter(fm))
+                            {
+                                yield return fm.ToString();
+                            }
                         }
                     }
                 }
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void SetCheckFlags()
+        {
+            IsCheck = _board.IsCheck();
+            IsCheckmate = false;
+            IsStalemate = false;
+
+            foreach (string moves in YieldValidMoves())
+            {
+                return;
+            }
+
+            if (IsCheck)
+            {
+                IsCheckmate = true;
+            }
+            else
+            {
+                IsStalemate = true;
             }
         }
     }

@@ -83,7 +83,9 @@ namespace ChessRules
                             if (_board.GetFigureAt(new Cell("h1")) == Figure.WhiteRock)
                                 if (_board.GetFigureAt(new Cell("f1")) == Figure.None)
                                     if (_board.GetFigureAt(new Cell("g1")) == Figure.None)
-                                        return true;
+                                        if (!_board.IsCheck())
+                                            if (!_board.IsCheckAfter(new FigureMoving("Ke1f1")))
+                                                    return true;
                     }
                     else if (_fm.To == new Cell("c1"))
                     {
@@ -92,7 +94,9 @@ namespace ChessRules
                                 if (_board.GetFigureAt(new Cell("b1")) == Figure.None)
                                     if (_board.GetFigureAt(new Cell("c1")) == Figure.None)
                                         if (_board.GetFigureAt(new Cell("d1")) == Figure.None)
-                                            return true;
+                                            if (!_board.IsCheck())
+                                                if (!_board.IsCheckAfter(new FigureMoving("Ke1d1")))
+                                                    return true;
                     }
                 }
             }
@@ -106,7 +110,9 @@ namespace ChessRules
                             if (_board.GetFigureAt(new Cell("h8")) == Figure.BlackRock)
                                 if (_board.GetFigureAt(new Cell("f8")) == Figure.None)
                                     if (_board.GetFigureAt(new Cell("g8")) == Figure.None)
-                                        return true;
+                                        if (!_board.IsCheck())
+                                            if (!_board.IsCheckAfter(new FigureMoving("ke8f8")))
+                                                return true;
                     }
                     else if (_fm.To == new Cell("c8"))
                     {
@@ -115,7 +121,9 @@ namespace ChessRules
                                 if (_board.GetFigureAt(new Cell("b8")) == Figure.None)
                                     if (_board.GetFigureAt(new Cell("c8")) == Figure.None)
                                         if (_board.GetFigureAt(new Cell("d8")) == Figure.None)
-                                            return true;
+                                            if (!_board.IsCheck())
+                                                if (!_board.IsCheckAfter(new FigureMoving("ke8d8")))
+                                                    return true;
                     }
                 }
             }

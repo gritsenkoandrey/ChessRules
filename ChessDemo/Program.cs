@@ -8,7 +8,7 @@ namespace ChessDemo
     {
         public static void Main(string[] args)
         {
-            Chess chess = new Chess("r3k2r/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQkq - 0 1");
+            Chess chess = new Chess();
 
             while (true)
             {
@@ -53,6 +53,10 @@ namespace ChessDemo
 
             sb.AppendLine("  +-----------------+");
             sb.AppendLine("    a b c d e f g h  ");
+
+            if (chess.IsCheck) sb.AppendLine("Is Check");
+            if (chess.IsCheckmate) sb.AppendLine("Is Checkmate");
+            if (chess.IsStalemate) sb.AppendLine("Is Stalemate");
 
             return sb.ToString();
         }

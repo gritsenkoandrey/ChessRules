@@ -17,6 +17,8 @@ namespace ChessRules
         public int SignY => Math.Sign(To.Y - From.Y);
         public Figure PlacedFigure => Promotion == Figure.None ? Figure : Promotion;
 
+        public static readonly FigureMoving None = new FigureMoving();
+
         public FigureMoving(FigureOnCell fc, Cell to, Figure promotion = Figure.None)
         {
             Figure = fc.Figure;
@@ -31,6 +33,14 @@ namespace ChessRules
             From = new Cell(move.Substring(1, 2));
             To = new Cell(move.Substring(3, 2));
             Promotion = move.Length == 6 ? (Figure)move[5] : Figure.None;
+        }
+
+        private FigureMoving()
+        {
+            Figure = Figure.None;
+            From = Cell.None;
+            To = Cell.None;
+            Promotion = Figure.None;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

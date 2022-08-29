@@ -56,6 +56,53 @@ namespace ChessRules
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsCheck()
+        {
+            return IsCheckAfter(FigureMoving.None);
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public bool IsCheckAfter(FigureMoving fm)
+        {
+            Board after = Move(fm);
+
+            return after.CanEatKing();
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool CanEatKing()
+        {
+            Cell badKing = FindBadKing();
+            Moves moves = new Moves(this);
+
+            foreach (FigureOnCell fc in YieldFigureOnCell())
+            {
+                if (moves.CanMove(new FigureMoving(fc, badKing)))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private Cell FindBadKing()
+        {
+            Figure badKing = MoveColor == Color.White ? Figure.BlackKing : Figure.WhiteKing;
+
+            foreach (Cell cell in Cell.YieldBoardCell())
+            {
+                if (GetFigureAt(cell) == badKing)
+                {
+                    return cell;
+                }
+            }
+            
+            return Cell.None;
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
         private void Init()
         {
             //rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1
