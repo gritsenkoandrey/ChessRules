@@ -38,6 +38,11 @@ namespace ChessRules
                 return this;
             }
 
+            if (_board.IsCheckAfter(fm))
+            {
+                return this;
+            }
+
             Board nextBoard = _board.Move(fm);
             
             Chess nextChess = new Chess(nextBoard);
@@ -49,6 +54,16 @@ namespace ChessRules
         public char GetFigure(int x, int y)
         {
             Cell cell = new Cell(x,y);
+
+            Figure figure = _board.GetFigureAt(cell);
+            
+            return figure == Figure.None ? '.' : (char)figure;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public char GetFigure(string name)
+        {
+            Cell cell = new Cell(name);
 
             Figure figure = _board.GetFigureAt(cell);
             
