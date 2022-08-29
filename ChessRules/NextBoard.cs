@@ -14,6 +14,8 @@ namespace ChessRules
             MoveFigures();
             DropEnPassant();
             SetEnPassant();
+            MoveCastleRock();
+            UpdateCastleFlags();
             AddMoveNumber();
             UpdateMoveColor();
             GenerateFen();
@@ -56,6 +58,81 @@ namespace ChessRules
                 {
                     EnPassant = new Cell(_fm.From.X, 5);
                 }
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void MoveCastleRock()
+        {
+            if (_fm.Figure == Figure.WhiteKing)
+            {
+                if (_fm.From == new Cell("e1"))
+                {
+                    if (_fm.To == new Cell("g1"))
+                    {
+                        SetFigureAt(new Cell("h1"), Figure.None);
+                        SetFigureAt(new Cell("f1"), Figure.WhiteRock);
+                    }
+                    else if (_fm.To == new Cell("c1"))
+                    {
+                        SetFigureAt(new Cell("a1"), Figure.None);
+                        SetFigureAt(new Cell("d1"), Figure.WhiteRock);
+                    }
+                }
+            }
+            else if (_fm.Figure == Figure.BlackKing)
+            {
+                if (_fm.From == new Cell("e8"))
+                {
+                    if (_fm.To == new Cell("g8"))
+                    {
+                        SetFigureAt(new Cell("h8"), Figure.None);
+                        SetFigureAt(new Cell("f8"), Figure.BlackRock);
+                    }
+                    else if (_fm.To == new Cell("c8"))
+                    {
+                        SetFigureAt(new Cell("a8"), Figure.None);
+                        SetFigureAt(new Cell("d8"), Figure.BlackRock);
+                    }
+                }
+            }
+        }
+
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private void UpdateCastleFlags()
+        {
+            switch (_fm.Figure)
+            {
+                case Figure.WhiteKing:
+                    CanCastleA1 = false;
+                    CanCastleH1 = false;
+                    return;
+                case Figure.WhiteRock:
+                    if (_fm.From == new Cell("a1"))
+                    {
+                        CanCastleA1 = false;
+                    }
+                    else if (_fm.From == new Cell("h1"))
+                    {
+                        CanCastleH1 = false;
+                    }
+                    return;
+                case Figure.BlackKing:
+                    CanCastleA8 = false;
+                    CanCastleH8 = false;
+                    return;
+                case Figure.BlackRock:
+                    if (_fm.From == new Cell("a8"))
+                    {
+                        CanCastleA8 = false;
+                    }
+                    else if (_fm.From == new Cell("h8"))
+                    {
+                        CanCastleH8 = false;
+                    }
+                    return;
+                
+                default: return;
             }
         }
 

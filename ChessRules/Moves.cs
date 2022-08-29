@@ -43,7 +43,7 @@ namespace ChessRules
             {
                 case Figure.WhiteKing:
                 case Figure.BlackKing:
-                    return CanKingMove();
+                    return CanKingMove() || CanKingCastle();
                 case Figure.WhiteQueen:
                 case Figure.BlackQueen:
                     return CanStraightMove();
@@ -55,7 +55,7 @@ namespace ChessRules
                     return (_fm.SignX != 0 && _fm.SignY != 0) && CanStraightMove();
                 case Figure.WhiteKnight:
                 case Figure.BlackKnight:
-                    return CanKnightMove();
+                    return CanKnightMove() || CanKingCastle();
                 case Figure.WhitePawn:
                 case Figure.BlackPawn:
                     return CanPawnMove();
@@ -68,6 +68,59 @@ namespace ChessRules
         private bool CanKingMove()
         {
             return _fm.AbsDeltaX <= 1 && _fm.AbsDeltaY <= 1;
+        }
+        
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        private bool CanKingCastle()
+        {
+            if (_fm.Figure == Figure.WhiteKing)
+            {
+                if (_fm.From == new Cell("e1"))
+                {
+                    if (_fm.To == new Cell("g1"))
+                    {
+                        if (_board.CanCastleH1)
+                            if (_board.GetFigureAt(new Cell("h1")) == Figure.WhiteRock)
+                                if (_board.GetFigureAt(new Cell("f1")) == Figure.None)
+                                    if (_board.GetFigureAt(new Cell("g1")) == Figure.None)
+                                        return true;
+                    }
+                    else if (_fm.To == new Cell("c1"))
+                    {
+                        if (_board.CanCastleA1) 
+                            if (_board.GetFigureAt(new Cell("a1")) == Figure.WhiteRock)
+                                if (_board.GetFigureAt(new Cell("b1")) == Figure.None)
+                                    if (_board.GetFigureAt(new Cell("c1")) == Figure.None)
+                                        if (_board.GetFigureAt(new Cell("d1")) == Figure.None)
+                                            return true;
+                    }
+                }
+            }
+            else if (_fm.Figure == Figure.BlackKing)
+            {
+                if (_fm.From == new Cell("e8"))
+                {
+                    if (_fm.To == new Cell("g8"))
+                    {
+                        if (_board.CanCastleH8)
+                            if (_board.GetFigureAt(new Cell("h8")) == Figure.BlackRock)
+                                if (_board.GetFigureAt(new Cell("f8")) == Figure.None)
+                                    if (_board.GetFigureAt(new Cell("g8")) == Figure.None)
+                                        return true;
+                    }
+                    else if (_fm.To == new Cell("c8"))
+                    {
+                        if (_board.CanCastleA8)
+                            if (_board.GetFigureAt(new Cell("a8")) == Figure.BlackRock)
+                                if (_board.GetFigureAt(new Cell("b8")) == Figure.None)
+                                    if (_board.GetFigureAt(new Cell("c8")) == Figure.None)
+                                        if (_board.GetFigureAt(new Cell("d8")) == Figure.None)
+                                            return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         [MethodImpl(MethodImplOptions.AggressiveInlining)]

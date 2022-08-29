@@ -8,10 +8,10 @@ namespace ChessRules
         public string Fen { get; protected set; }
         public Cell EnPassant { get; protected set; }
         public Color MoveColor { get; protected set; }
-        protected bool CanCastleA1 { get; private set; } //Q
-        protected bool CanCastleH1 { get; private set; } //K
-        protected bool CanCastleA8 { get; private set; } //q
-        protected bool CanCastleH8 { get; private set; } //k
+        public bool CanCastleA1 { get; protected set; } //Q
+        public bool CanCastleH1 { get; protected set; } //K
+        public bool CanCastleA8 { get; protected set; } //q
+        public bool CanCastleH8 { get; protected set; } //k
         protected int DrawNumber { get; private set; }
         protected int MoveNumber { get; set; }
         
